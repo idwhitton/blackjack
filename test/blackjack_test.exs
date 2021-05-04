@@ -2,7 +2,8 @@ defmodule BlackjackTest do
   use ExUnit.Case
   doctest Blackjack
 
-  test "greets the world" do
-    assert Blackjack.hello() == :world
+  setup do
+    {:ok,server_pid} = Blackjack.start_link()
+    {:ok,server: server_pid}
   end
 end
