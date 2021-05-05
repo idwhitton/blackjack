@@ -6,4 +6,5 @@ defmodule BlackjackTest do
     {:ok,server_pid} = Blackjack.start_link()
     {:ok,server: server_pid}
   end
+
 end
