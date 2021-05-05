@@ -25,8 +25,8 @@ defmodule Blackjack do
     GenServer.call(pid, :hit_me)
   end
 
-  def stay(pid) do
-    GenServer.call(pid, :stay)
+  def stick(pid) do
+    GenServer.call(pid, :stick)
   end
 
   def new_round(pid) do
@@ -74,7 +74,7 @@ defmodule Blackjack do
 
   end
 
-  def handle_call(:stay, _from, list) do
+  def handle_call(:stick, _from, list) do
 
     hand = elem(list, 0)
     hand_score = hand_score(hand)
@@ -107,8 +107,6 @@ defmodule Blackjack do
     create_deck() |> Enum.shuffle()
   end
 
-  # check for full score then check minus 10 for each ace and call this above
-  # should fix 1 or 11 score issue --- tomorrow tho
   defp hand_score(hand) do
     max_score = Enum.reduce(hand, 0, fn(x, acc) -> get_face_value(x.value) + acc end)
     number_of_aces = count_A(hand)
@@ -117,6 +115,10 @@ defmodule Blackjack do
       true -> max_score
     end
 
+  end
+
+  defp count_A(my_hand) do
+    Enum.count(my_hand, & &1.value == "A")
   end
 
   defp do_for_A(max_score, ace_count) do
@@ -137,10 +139,6 @@ defmodule Blackjack do
       "K" -> 10
       _ -> face
     end
-  end
-
-  defp count_A(my_hand) do
-    Enum.count(my_hand, & &1.value == "A")
   end
 
 end
